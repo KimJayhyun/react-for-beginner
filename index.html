@@ -7,22 +7,62 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    const root = document.getElementById("root");
+    function MinutesToHours() {
+      const [amount, setAmounts] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(false);
 
-    function App() {
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        setCounter((current) => current + 1);
+      const onChange = (event) => {
+        setAmounts(event.target.value);
       };
 
+      const reset = () => setAmounts(0);
+      const onFlip = () => {
+        reset();
+        setFlipped(!flipped);
+      };
       return (
         <div>
-          <h3>Total Clicks: {counter}</h3>
-          <button onClick={onClick}>Click me</button>
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              value={flipped ? amount * 60 : amount}
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange}
+              disabled={flipped}
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              value={flipped ? amount : Math.round(amount / 60)}
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              onChange={onChange}
+              disabled={!flipped}
+            />
+          </div>
+          <div>
+            <button onClick={reset}>Reset</button>
+            <button onClick={onFlip}>Flip</button>
+          </div>
         </div>
       );
     }
 
+    function App() {
+      return (
+        <div>
+          <h1>Super Convertor</h1>
+
+          <MinutesToHours />
+        </div>
+      );
+    }
+
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
